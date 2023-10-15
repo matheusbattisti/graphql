@@ -1,0 +1,43 @@
+// Sequencia de comandos:
+// npx prisma init
+// npx prisma migrate dev --name init
+// npx prisma db seed
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./db.sqlite"
+}
+
+/// Representa um usuário no sistema.
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  email    String    @unique
+  password String
+  posts    Post[]
+  comments Comment[]
+}
+
+/// Representa um post no sistema de blog.
+model Post {
+    id       Int    @id @default(autoincrement())   
+    title    String                                
+    content  String?                                
+    author   User   @relation(fields: [authorId], references: [id]) 
+    authorId Int                                    
+    comments Comment[]                              
+}
+
+/// Representa um comentário em um post.
+model Comment {
+    id       Int    @id @default(autoincrement())   
+    content  String                                 
+    post     Post   @relation(fields: [postId], references: [id]) 
+    postId   Int                                    
+    author   User   @relation(fields: [authorId], references: [id]) 
+    authorId Int                                    
+}

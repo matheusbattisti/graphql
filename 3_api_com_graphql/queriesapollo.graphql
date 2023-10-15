@@ -1,0 +1,421 @@
+# 1 - Retorna todos os autores.
+query GetAllAuthors {
+  allAuthors {
+    id
+    name
+  }
+}
+
+# 2 - Retorna todos os livros.
+query GetAllBooks {
+  allBooks {
+    id
+    title
+    author {
+      name
+    }
+  }
+}
+
+# 3 - Retorna todas as avaliações.
+query GetAllReviews {
+  allReviews {
+    id
+    content
+    rating
+    date
+  }
+}
+
+# 4 - Retorna um autor específico com base no ID.
+query GetAuthor($id: ID!) {
+  author(id: $id) {
+    id
+    name
+  }
+}
+
+{
+  "id": "3"
+}
+
+# 5 - Retorna um livro específico com base no ID.
+query GetBook($id: ID!) {
+  book(id: $id) {
+    id
+    title
+    author {
+      id
+      name
+    }
+  }
+}
+
+{
+  "id": "2"
+}
+
+# 6 - Retorna uma avaliação específica com base no ID.
+query GetReview($id: ID!) {
+  review(id: $id) {
+    id
+    content
+    rating
+  }
+}
+
+{
+  "id": "5"
+}
+
+# 7 - Retorna os livros e avaliações de um autor específico com base no nome do autor.
+query GetBooksAndReviewsByAuthor($authorName: String!) {
+  booksByAuthor(authorName: $authorName) {
+    id
+    title
+    reviews {
+      id
+      content
+      rating
+      date
+    }
+  }
+}
+
+{
+  "authorName": "J.K. Rowling"
+}
+
+# 8 - Retorna as avaliações e o autor de um livro específico com base no título do livro.
+query GetReviewsByBook($bookTitle: String!) {
+  reviewsByBook(bookTitle: $bookTitle) {
+    id
+    content
+    rating
+    date
+    book {
+      id
+      title
+      author {
+        id
+        name
+      }
+    }
+  }
+}
+
+{
+  "bookTitle": "A Coisa"
+}
+
+# 9 - Retorna os livros com uma avaliação específica ou superior, junto com seus autores.
+query GetBooksWithRatingAbove($rating: Int!) {
+  booksWithRatingAbove(rating: $rating) {
+    id
+    title
+    author {
+      id
+      name
+    }
+  }
+}
+
+{
+  "rating": 5
+}
+
+# 10 - Resolver de manipulação de dado
+query GetAuthors {
+  allAuthors {
+    name
+  }
+}
+
+# 11 - Resolver de tipos - Retorna todos os livros escritos por um autor específico.
+query GetAuthorWithBooks($authorId: ID!) {
+  author(id: $authorId) {
+    name
+    books {
+      title
+    }
+  }
+}
+
+{
+  "bookId": 1
+}
+
+# 12 - Retorna o autor de um livro específico e todas as avaliações desse livro.
+query GetBookWithAuthorAndReviews($bookId: ID!) {
+  book(id: $bookId) {
+    title
+    author {
+      name
+    }
+    reviews {
+      content
+    }
+  }
+}
+
+{
+  "bookId": 2
+}
+
+# 13 - Retorna o livro associado a uma avaliação específica.
+query GetReviewWithBook($reviewId: ID!) {
+  review(id: $reviewId) {
+    content
+    book {
+      title
+    }
+  }
+}
+
+{
+  "reviewId": 2
+}
+
+# 14 - Exercício 1:  Retorna livros com uma avaliação específica.
+query GetBooksWithSpecificRating($rating: Int!) {
+  booksWithSpecificRating(rating: $rating) {
+    id
+    title
+  }
+}
+
+{
+  "rating": 5
+}
+
+# 15 - Exercício 2: Retorna autores com um número mínimo de livros.
+query GetAuthorsWithMinBooks($minBooks: Int!) {
+  authorsWithMinBooks(minBooks: $minBooks) {
+    id
+    name
+  }
+}
+
+{
+  "minBooks": 2
+}
+
+# 16 - Exercício 3: Retorna avaliações recentes após uma data específica.
+query GetRecentReviews($afterDate: String!) {
+  recentReviews(afterDate: $afterDate) {
+    id
+    content
+    rating
+    date
+  }
+}
+
+{
+  "afterDate": "2023-03-16"
+}
+
+# MUTATIONS
+
+# 17 - # Criando Dados
+mutation AddBook($title: String!, $author_id: ID!) {
+  addBook(title: $title, author_id: $author_id) {
+    id
+    title
+    author {
+      id
+      name
+    }
+  }
+}
+
+# dados e teste
+{
+  "title": "Novo Livro",
+  "author_id": "3"
+}
+
+query GetBooks {
+  allBooks {
+    title
+  }
+}
+
+mutation AddReview($content: String!, $rating: Int!, $book_id: ID!, $date: String!) {
+  addReview(content: $content, rating: $rating, book_id: $book_id, date: $date) {
+    id
+    content
+    rating
+    date
+    book {
+      id
+      title
+    }
+  }
+}
+
+# dados e teste
+{
+  "content": "Uma nova revisão para o livro.",
+  "rating": 4,
+  "book_id": "2",
+  "date": "2023-09-23"
+}
+
+query GetReviews {
+  allReviews {
+    rating
+    content
+  }
+}
+
+
+# 18 - Atualizando Dados
+mutation UpdateAuthor($id: ID!, $name: String!) {
+  updateAuthor(id: $id, name: $name) {
+    id
+    name
+  }
+}
+
+# dados e teste
+{
+  "id": "2",
+  "name": "Zezinho"
+}
+
+query GetAuthors {
+  allAuthors {
+    name
+  }
+}
+
+
+mutation UpdateReview($id: ID!, $content: String!, $rating: Int!, $book_id: ID!, $date: String!) {
+  updateReview(id: $id, content: $content, rating: $rating, book_id: $book_id, date: $date) {
+    id
+    content
+    rating
+    date
+    book {
+      id
+      title
+    }
+  }
+}
+
+# dados e teste
+{
+  "id": "2",
+  "content": "Revisão atualizada para o livro.",
+  "rating": 5,
+  "book_id": "2",
+  "date": "2023-09-24"
+}
+
+
+query GetReviews {
+  allReviews {
+    rating
+    content
+  }
+}
+
+# 19 - Deletando Dados
+mutation DeleteAuthor($id: ID!) {
+  deleteAuthor(id: $id) {
+    id
+    name
+  }
+}
+
+# dados e teste
+{
+  "id": "3"
+}
+
+query GetAuthors {
+  allAuthors {
+    name
+  }
+}
+
+
+mutation DeleteBook($id: ID!) {
+  deleteBook(id: $id) {
+    id
+    title
+  }
+}
+
+{
+  "id": "3"
+}
+
+
+# 20 - Exercício 1: Excluir Review
+mutation DeleteReview($id: ID!) {
+  deleteReview(id: $id) {
+    id
+    content
+  }
+}
+
+
+# dados e teste
+{
+  "id": "3"
+}
+
+query GetReviews {
+  allReviews {
+    rating
+    content
+  }
+}
+
+
+# 21 - Exercício 2: Atualizar Livro
+mutation UpdateBook($id: ID!, $title: String!, $author_id: ID!) {
+  updateBook(id: $id, title: $title, author_id: $author_id) {
+    id
+    title
+    author {
+      id
+      name
+    }
+  }
+}
+
+
+# dados e teste
+{
+  "id": "5",
+  "title": "Título Atualizado do Livro",
+  "author_id": "3"
+}
+
+query GetBooks {
+  allBooks {
+    title
+  }
+}
+
+
+# 22 - Exercício 3: Criar Autor
+mutation AddAuthor($name: String!) {
+  addAuthor(name: $name) {
+    id
+    name
+  }
+}
+
+# dados e teste
+{
+  "name": "Novo Autor Adicionado"
+}
+
+query GetAuthors {
+  allAuthors {
+    name
+  }
+}

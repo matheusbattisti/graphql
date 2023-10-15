@@ -1,0 +1,23 @@
+{
+  "name": "4_criando_uma_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.4.2",
+    "apollo-server": "^3.12.1",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^16.8.1",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.4.2"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}
