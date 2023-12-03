@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -15,6 +16,7 @@ const prisma = new PrismaClient();
 
 // Middlewares
 app.use(express.json());
+app.use(cors());
 
 // Configuração de rotas
 app.use("/api/users", userRoutes);
